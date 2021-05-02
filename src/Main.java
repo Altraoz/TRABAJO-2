@@ -19,6 +19,7 @@ public class Main{
         }
         //--------------------------------
 
+
         int finalizador = 0;
         while (finalizador == 0){
             String solicitud = entrada.nextLine();
