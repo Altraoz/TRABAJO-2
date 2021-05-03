@@ -6,7 +6,7 @@ public class Main{
     public static void main(String[] args) {
         Scanner entrada =  new Scanner(System.in);
 
-        //InicializaciÛn de contenedores
+        //Inicializaci√≥n de contenedores
         
         ArrayList<LinkedList<Integer>> MatrizContenedores = new ArrayList<>();
         int contenedores = 0;
@@ -26,11 +26,10 @@ public class Main{
         while (finalizador == 0){
             String solicitud = entrada.nextLine();
 
-            if (contenedores == 990){System.out.println("Alerta, umbral alcanzado, no se reciben m·s contenedores");}
-            // if (vehiculos == 371){System.out.println("Alerta, umbral alcanzado, no se reciben m·s vehiculos");}
+            if (contenedores == 990){System.out.println("Alerta, umbral alcanzado, no se reciben m√°s contenedores");}
+            // if (vehiculos == 371){System.out.println("Alerta, umbral alcanzado, no se reciben m√°s vehiculos");}
 
             if(solicitud.equals("recibir contenedor")){
-            	int c=0;
             	System.out.print("Ingrese el serial del contenedor ");
             	int contenedor= entrada.nextInt();
             	for (int i = 0; i < 200; i++){
@@ -40,8 +39,6 @@ public class Main{
 					}
 					
 					else if (MatrizContenedores.get(i).size() < 5 ) {
-						if(MatrizContenedores.get(i).contains(contenedor)) {
-	            			c=1;}
             			MatrizContenedores.get(i).addFirst(contenedor);
                         System.out.println(180 + " segundos");
                         System.out.println("Contenedor almacenado en la pila: " + i);
