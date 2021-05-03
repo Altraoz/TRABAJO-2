@@ -4,7 +4,7 @@ public class Main{
     public static void main(String[] args) {
         Scanner entrada =  new Scanner(System.in);
 
-        //Inicialización de contenedores
+        //Inicialización del puerto
         ArrayList<LinkedList<Integer>> MatrizContenedores = new ArrayList<>();
         ArrayList<LinkedList<Integer>> MatrizAutos = new ArrayList<>();
         int contenedores = 0, autos = 0;
@@ -26,15 +26,21 @@ public class Main{
             }
         }
         System.out.println(MatrizAutos);
-
         System.out.println(MatrizContenedores);
-
-        //-------------------------------------
+        //--------------------------------
 
         String solicitud = "1", owo;
         while (!solicitud.equals("0")){
             solicitud = entrada.nextLine();
-            if (solicitud.equals("recibir")){
+
+            if (contenedores == 990){System.out.println("Alerta, umbral alcanzado, no se reciben más contenedores");}
+            if (autos == 371){System.out.println("Alerta, umbral alcanzado, no se reciben más vehiculos");}
+
+            if(solicitud.equals("recibir contenedor")){}
+
+            else if (solicitud.equals("entregar contenedor")){}
+
+            else if(solicitud.equals("recibir auto")){
                 for (int i = 0; i < 25; i++){
                     if (MatrizAutos.get(i).size() < 15){
                         MatrizAutos.get(i).add(Integer.valueOf(entrada.nextLine()));
@@ -43,32 +49,17 @@ public class Main{
                     }
                 }
             }
-            if (solicitud.equals("entregar")){
+
+            else if(solicitud.equals("entregar auto")){
                 owo = entrada.nextLine();
-                for (int i = 0; i < MatrizAutos.size(); i++){
-
-                }
+                for (int i = 0; i < MatrizAutos.size(); i++){ }
             }
-            System.out.println(MatrizAutos);
-            /*
-            if (contenedores == 990){System.out.println("Alerta, umbral alcanzado, no se reciben más contenedores");}
-            // if (vehiculos == 371){System.out.println("Alerta, umbral alcanzado, no se reciben más vehiculos");}
-
-            if(solicitud.equals("recibir contenedor")){ }
-
-            else if (solicitud.equals("entregar contenedor")){}
-
-            //
-
-            else if(solicitud.equals("entregar vehiculo")){}
 
             else if(solicitud.equals("capacidad")){} //Referencia a las cantidades de contenedores y vehiculos
 
             else if(solicitud.equals("elementos")){} //Consulta de elementos de una pila o columna
 
-            else{finalizador = -1;}
-
-             */
+            else{}
         }
     }
 }
