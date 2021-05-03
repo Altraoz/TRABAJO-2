@@ -30,28 +30,27 @@ public class Main{
             // if (vehiculos == 371){System.out.println("Alerta, umbral alcanzado, no se reciben más vehiculos");}
 
             if(solicitud.equals("recibir contenedor")){
+            	int c=0;
             	System.out.print("Ingrese el serial del contenedor ");
-            	int contenedor = entrada.nextInt();
+            	int contenedor= entrada.nextInt();
             	for (int i = 0; i < 200; i++){
-                    if (MatrizContenedores.get(i).contains(contenedor)) {
-                    	System.out.print("Este contenedor ya se encuentra en la pila");
-                    	break;
-                    }
-                    else if (MatrizContenedores.get(i).size() <5 && MatrizContenedores.get(i).contains(contenedor)==false) {
-                    	MatrizContenedores.get(i).addFirst(contenedor);
-                    	contenedores++;
-                    System.out.println(180 + " segundos");
-                    System.out.println("contenedor almacenado en la pila: " + i);
-                    System.out.print(contenedores);
-                    System.out.print(MatrizContenedores);
-                    }
-                    
-                    }
-                   
-            	}
-         
-            	  
-                   
+					if (MatrizContenedores.get(i).contains(contenedor)) {
+            			System.out.print("Este contenedor ya esta en la pila");
+            			break;
+					}
+					
+					else if (MatrizContenedores.get(i).size() < 5 ) {
+						if(MatrizContenedores.get(i).contains(contenedor)) {
+	            			c=1;}
+            			MatrizContenedores.get(i).addFirst(contenedor);
+                        System.out.println(180 + " segundos");
+                        System.out.println("Contenedor almacenado en la pila: " + i);
+                            }
+            
+                }
+            }
+            		
+                
             else if (solicitud.equals("entregar contenedor")){
             	
             }
