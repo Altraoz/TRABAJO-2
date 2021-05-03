@@ -6,15 +6,18 @@ public class Main{
     public static void main(String[] args) {
         Scanner entrada =  new Scanner(System.in);
 
-        //InicializaciÃ³n de contenedores
+        //Inicialización de contenedores
+        
         ArrayList<LinkedList<Integer>> MatrizContenedores = new ArrayList<>();
         int contenedores = 0;
         for(int i = 0; i < 200; i++) {
-            MatrizContenedores.add(new LinkedList<>());
+        	LinkedList<Integer> pila = new LinkedList<>();
+			MatrizContenedores.add(pila);
             for (int j = 0; j < 5; j++) {
                 if (contenedores<988){
                     MatrizContenedores.get(i).addFirst(contenedores+1);
-                    contenedores++;}
+                    contenedores++;
+                    }
             }
         }
         //--------------------------------
@@ -23,14 +26,39 @@ public class Main{
         while (finalizador == 0){
             String solicitud = entrada.nextLine();
 
-            if (contenedores == 990){System.out.println("Alerta, umbral alcanzado, no se reciben mÃ¡s contenedores");}
-            // if (vehiculos == 371){System.out.println("Alerta, umbral alcanzado, no se reciben mÃ¡s vehiculos");}
+            if (contenedores == 990){System.out.println("Alerta, umbral alcanzado, no se reciben más contenedores");}
+            // if (vehiculos == 371){System.out.println("Alerta, umbral alcanzado, no se reciben más vehiculos");}
 
-            if(solicitud.equals("recibir contenedor")){}
+            if(solicitud.equals("recibir contenedor")){
+            	System.out.print("Ingrese el serial del contenedor ");
+            	int contenedor = entrada.nextInt();
+            	for (int i = 0; i < 200; i++){
+                    if (MatrizContenedores.get(i).contains(contenedor)) {
+                    	System.out.print("Este contenedor ya se encuentra en la pila");
+                    	break;
+                    }
+                    else if (MatrizContenedores.get(i).size() <5 && MatrizContenedores.get(i).contains(contenedor)==false) {
+                    	MatrizContenedores.get(i).addFirst(contenedor);
+                    	contenedores++;
+                    System.out.println(180 + " segundos");
+                    System.out.println("contenedor almacenado en la pila: " + i);
+                    System.out.print(contenedores);
+                    System.out.print(MatrizContenedores);
+                    }
+                    
+                    }
+                   
+            	}
+         
+            	  
+                   
+            else if (solicitud.equals("entregar contenedor")){
+            	
+            }
 
-            else if (solicitud.equals("entregar contenedor")){}
-
-            else if(solicitud.equals("recibir vehiculo")){}
+            else if(solicitud.equals("recibir vehiculo")){
+  
+            }
 
             else if(solicitud.equals("entregar vehiculo")){}
 
