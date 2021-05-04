@@ -7,14 +7,16 @@ public class Main{
         //Inicialización del puerto
         ArrayList<LinkedList<Integer>> MatrizContenedores = new ArrayList<>();
         ArrayList<LinkedList<Integer>> MatrizAutos = new ArrayList<>();
+        ArrayList<Integer> serialesA = new ArrayList<>();
         int contenedores = 0, autos = 0;
 
-        //Iniciar contendeores
+        //Iniciar contendores
         for(int i = 0; i < 200; i++) {
             MatrizContenedores.add(new LinkedList<>());
             for (int j = 0; j < 5; j++) {
                 if (contenedores<988){
                     MatrizContenedores.get(i).addFirst(contenedores+1);
+
                     contenedores++;}
             }
         }
@@ -23,8 +25,9 @@ public class Main{
         for (int i = 0; i < 25; i++){
             MatrizAutos.add(new LinkedList<>());
             for (int j = 0; j < 15; j++){
-                if (autos < 371){
+                if (autos < 369){
                     MatrizAutos.get(i).add(autos+1);
+                    serialesA.add(autos+1);
                     autos++;
                 }
             }
@@ -36,7 +39,7 @@ public class Main{
         String solicitud = "1";
 
         while (!solicitud.equals("0")){
-            System.out.print("Ingrese su solicitud: ");
+            System.out.print("Ingrese su solicitud: }");
             solicitud = entrada.nextLine();
 
             //------------------------------------
@@ -45,20 +48,97 @@ public class Main{
                     System.out.println("!Alerta! (Umbral alcanzado) --> No se reciben más contenedores");
                     System.out.println("------------------------------");
                     continue;}
+
+                for(int i=0; i<200; i++) {
+                    if (MatrizContenedores.get(i).size() < 5) {
+                        MatrizContenedores.get(i).addFirst(Integer.valueOf(entrada.nextLine()));
+                        System.out.println(180 + " segundos");
+                        System.out.println("Contenedor almacenado en la pila: " + i);
+                    }
+                }
+                contenedores++;
             }
             //------------------------------------
-            else if (solicitud.equals("entregar contenedor")){}
+            else if (solicitud.equals("entregar contenedor")){
+                int tiempoC = 0; int indice_contenedor = 0; int aux, serial_contenedor;
+                serial_contenedor = entrada.nextInt();
+
+                //Iteración para buscar en que pila esta el elemento serial_contenedor
+                for (int i = 0; i < 200; i++) {
+                    LinkedList<Integer> pila1 = MatrizContenedores.get(i);
+                    LinkedList<Integer> pila2 = new LinkedList<>();
+                    aux = i;
+                    while (pila1.peekFirst() != null) {
+                        if (!pila1.peekFirst().equals(serial_contenedor)) {
+                            pila2.addFirst(pila1.peekFirst());
+                            pila1.pollFirst();
+                        }else {
+                            indice_contenedor = i;
+                            i = 200;
+                            pila2.addFirst(pila1.peekFirst());
+                            pila1.pollFirst();
+                        }
+                    }
+                    MatrizContenedores.set(aux, pila2);
+                }
+
+                //Iteracion para encontrar las pilas que esten incompletas
+                ArrayList<Integer> pil_incompletas = new ArrayList<>();
+                int pila_incompleta = 0;
+                int aa = 0;
+                for (int i = 0; i < 200; i++) {
+                    if (MatrizContenedores.get(i).size() != 5) {
+                        pil_incompletas.add(i);
+                    }
+                }
+
+                //bucle que se encarga de acomodar la lista hasta que el proximo elemento de una pila sea el necesitado
+                while (MatrizContenedores.get(indice_contenedor).peekFirst() != serial_contenedor) {
+                    if (MatrizContenedores.get(pil_incompletas.get(aa)).size() < 6){
+                        if (MatrizContenedores.get(pil_incompletas.get(aa)).size() < 5) {
+                            MatrizContenedores.get(pil_incompletas.get(aa)).addFirst(MatrizContenedores.get(indice_contenedor).peekFirst());
+                            MatrizContenedores.get(indice_contenedor).pollFirst();
+                            tiempoC += 60;
+                        }
+                        else {
+                            MatrizContenedores.get(pil_incompletas.get(aa)).addFirst(MatrizContenedores.get(indice_contenedor).peekFirst());
+                            MatrizContenedores.get(indice_contenedor).pollFirst();
+                            MatrizContenedores.get(indice_contenedor).addFirst(MatrizContenedores.get(pil_incompletas.get(aa)).peekFirst());
+                            MatrizContenedores.get(pil_incompletas.get(aa)).pollFirst();
+                            tiempoC += 120;
+                        }
+                    }
+                    else{ aa++; }
+                }
+
+                MatrizContenedores.get(indice_contenedor).pollFirst();
+                tiempoC += 420;
+
+                System.out.println("Elemento almacenado en la pila: " + indice_contenedor);
+                System.out.println("Tiempo estimado: "+ tiempoC +" segundos");
+                contenedores --;
+                solicitud = entrada.nextLine();
+
+            }
             //------------------------------------
             else if(solicitud.equals("recibir auto")){
                 if (autos == 371){
                     System.out.println("!Alerta! (Umbral alcanzado) --> No se reciben más autos");
                     System.out.println("------------------------------");
                     continue;}
+                System.out.print("Ingrese el serial del auto: ");
+                String of = entrada.nextLine();
+                if (serialesA.contains(Integer.valueOf(of))){
+                    System.out.println("-Un automóvil ya contiene este serial!");
+                    System.out.println("------------------------------");
+                    continue; }
                 for (int i = 0; i < 25; i++){
                     if (MatrizAutos.get(i).size() < 15){
-                        MatrizAutos.get(i).add(Integer.valueOf(entrada.nextLine()));
+                        MatrizAutos.get(i).add(Integer.valueOf(of));
+                        serialesA.add(Integer.valueOf(of));
                         System.out.println(120 + " segundos");
                         System.out.println("Auto almacenado en la cola: " + (i + 1));
+                        break;
                     }
                 }
                 autos++;
@@ -67,9 +147,17 @@ public class Main{
             else if(solicitud.equals("entregar auto")){
 
                 int tiempo = 0; int indice_auto = 0; int aux, serial_auto;
+                String serial_autoo;
                 System.out.print("Ingrese el serial del auto: ");
-                serial_auto = entrada.nextInt();
+                serial_autoo = entrada.nextLine();
 
+                serial_auto = Integer.parseInt(serial_autoo);
+                if (!serialesA.contains(serial_auto)){
+                    System.out.println("-Automóvil no encontrado");
+                    System.out.println("------------------------------");
+                    continue;
+                }
+                serialesA.remove(Integer.valueOf(serial_auto));
                 //Iteración para buscar en que cola esta el elemento serial_auto
                 for (int i = 0; i < 25; i++) {
                     LinkedList<Integer> cola1 = MatrizAutos.get(i);
@@ -122,7 +210,6 @@ public class Main{
                 System.out.println("Elemento almacenado en la cola: " + (indice_auto + 1));
                 System.out.println("tiempo estimado: "+tiempo+" segundos");
                 autos --;
-                solicitud = entrada.nextLine();
 
             }
             //-------------------------------------------
@@ -173,7 +260,7 @@ public class Main{
 
             else if(solicitud.equals("0")){System.out.println("Fin del programa");}
 
-            else{ System.out.println("Entrada no valida"); }
+            else{ System.out.println("-Entrada no valida"); }
 
             System.out.println("------------------------------");
         }
