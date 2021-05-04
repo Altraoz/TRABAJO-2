@@ -39,7 +39,7 @@ public class Main{
         String solicitud = "1";
 
         while (!solicitud.equals("0")){
-            System.out.print("Ingrese su solicitud: }");
+            System.out.print("Ingrese su solicitud: ");
             solicitud = entrada.nextLine();
 
             //------------------------------------
@@ -137,7 +137,7 @@ public class Main{
                         MatrizAutos.get(i).add(Integer.valueOf(of));
                         serialesA.add(Integer.valueOf(of));
                         System.out.println(120 + " segundos");
-                        System.out.println("Auto almacenado en la cola: " + (i + 1));
+                        System.out.println("-Auto almacenado en la cola: " + (i + 1));
                         break;
                     }
                 }
@@ -185,37 +185,51 @@ public class Main{
                         col_incompletas.add(i);
                     }
                 }
+                ArrayList<Integer> colas_usadas = new ArrayList<>();
 
                 //bucle que se encarga de acomodar la lista hasta que el proximo elemento de una cola sea el necesitado
                 while (MatrizAutos.get(indice_auto).peek() != serial_auto) {
-                    if (MatrizAutos.get(col_incompletas.get(aa)).size() < 16){
-                        if (MatrizAutos.get(col_incompletas.get(aa)).size() < 15) {
-                            MatrizAutos.get(col_incompletas.get(aa)).add(MatrizAutos.get(indice_auto).peek());
-                            MatrizAutos.get(indice_auto).poll();
-                            tiempo += 20;
+                    if (MatrizAutos.get(col_incompletas.get(aa)).size() < 15){
+                        if (!colas_usadas.contains(col_incompletas.get(aa))){
+                            colas_usadas.add(col_incompletas.get(aa));
                         }
-                        else {
-                            MatrizAutos.get(col_incompletas.get(aa)).add(MatrizAutos.get(indice_auto).peek());
-                            MatrizAutos.get(indice_auto).poll();
-                            MatrizAutos.get(indice_auto).add(MatrizAutos.get(col_incompletas.get(aa)).peek());
-                            MatrizAutos.get(col_incompletas.get(aa)).poll();
-                            tiempo += 40;
-                        }
-                    }
-                    else{ aa++; }
+                        MatrizAutos.get(col_incompletas.get(aa)).add(MatrizAutos.get(indice_auto).peek());
+                        MatrizAutos.get(indice_auto).poll();
+                        tiempo += 20;
+                    }else if (aa == col_incompletas.size()-1){
+
+                        MatrizAutos.get(indice_auto).add(MatrizAutos.get(col_incompletas.get(aa)).peek());
+                        MatrizAutos.get(col_incompletas.get(aa)).poll();
+                        MatrizAutos.get(col_incompletas.get(aa)).add(MatrizAutos.get(indice_auto).peek());
+                        MatrizAutos.get(indice_auto).poll();
+                        tiempo += 40;
+                    } else{ aa++; }
                 }
                 MatrizAutos.get(indice_auto).poll();
                 tiempo += 140;
 
-                System.out.println("Elemento almacenado en la cola: " + (indice_auto + 1));
-                System.out.println("tiempo estimado: "+tiempo+" segundos");
+                System.out.println("-Elemento almacenado en la cola: " + (indice_auto + 1));
+                System.out.println("-Tiempo estimado: "+tiempo+" segundos");
+                if (!colas_usadas.isEmpty()){
+                    if (colas_usadas.size() == 1){
+                        System.out.print("-Autos ubicados en la cola: ");
+                        System.out.println(colas_usadas.get(0));
+                    }else {
+                        System.out.print("-Autos ubicados en las colas: ");
+                        for (int j = 0; j < colas_usadas.size(); j++) {
+                            if (j == colas_usadas.size() - 1) {
+                                System.out.println(colas_usadas.get(j) + ".");
+                            }else{ System.out.print(colas_usadas.get(j)+", "); }
+                        }
+                    }
+                }
                 autos --;
 
             }
             //-------------------------------------------
             else if(solicitud.equals("capacidad")){
-                System.out.println("contenedores: " + contenedores);
-                System.out.println("autos: " + autos);
+                System.out.println("-Contenedores: " + contenedores);
+                System.out.println("-Autos: " + autos);
             }
             //-------------------------------------------
             else if(solicitud.equals("consultar")){
@@ -225,13 +239,13 @@ public class Main{
                 String indicativo = entrada.nextLine();
                 if(elemento.equals("pila") && Integer.parseInt(indicativo) > 0 && Integer.parseInt(indicativo) <= 200){
                     LinkedList<Integer> pila = MatrizContenedores.get(Integer.parseInt(indicativo)-1);
-                    for (Integer elem: pila) {System.out.println("[" + elem + "]");}
+                    for (Integer elem: pila) {System.out.println("-[" + elem + "]");}
                 }
                 else if (elemento.equals("cola") && Integer.parseInt(indicativo) > 0 && Integer.parseInt(indicativo) <= 25) {
                     LinkedList<Integer> cola = MatrizAutos.get(Integer.parseInt(indicativo)-1);
-                    for (Integer elem: cola) {System.out.println("[" + elem + "]");}
+                    for (Integer elem: cola) {System.out.println("-[" + elem + "]");}
                 }
-                else{System.out.println("Consulta invalida");}
+                else{System.out.println("-Consulta invalida");}
             }
             //-------------------------------------------
             else if(solicitud.equals("buscar")){
@@ -243,22 +257,22 @@ public class Main{
                 if(elemento.equals("contenedor") && Integer.parseInt(serial) > 0 && Integer.parseInt(serial) <= 1000){
                     for (LinkedList pila: MatrizContenedores ) {
                         if(pila.contains(Integer.parseInt(serial))){
-                            System.out.println("pila: " + MatrizContenedores.indexOf(pila)); verificador++; break;}
+                            System.out.println("-Pila: " + MatrizContenedores.indexOf(pila)); verificador++; break;}
                     }
-                    if (verificador == 0){ System.out.println("No se encuentra en el puerto");}
+                    if (verificador == 0){ System.out.println("-No se encuentra en el puerto");}
                 }
                 else if (elemento.equals("auto") && Integer.parseInt(serial) > 0 && Integer.parseInt(serial) <= 375) {
                     for (LinkedList cola: MatrizAutos ) {
                         if(cola.contains(Integer.parseInt(serial))){
-                            System.out.println("cola: " + MatrizAutos.indexOf(cola)); verificador++; break;}
+                            System.out.println("-Cola: " + MatrizAutos.indexOf(cola)); verificador++; break;}
                     }
-                    if (verificador == 0){ System.out.println("No se encuentra en el puerto");}
+                    if (verificador == 0){ System.out.println("-No se encuentra en el puerto");}
                 }
-                else{System.out.println("Busqueda invalida");}
+                else{System.out.println("-Busqueda invalida");}
             }
             //-------------------------------------------
 
-            else if(solicitud.equals("0")){System.out.println("Fin del programa");}
+            else if(solicitud.equals("0")){System.out.println("-Fin del programa ;)");}
 
             else{ System.out.println("-Entrada no valida"); }
 
